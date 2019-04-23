@@ -214,13 +214,13 @@ In case of P2WPKH it will be `(p, sig|pub)`.
 
 This scriptsig contains signatures and other stack values such that scriptpubkey evaluation against scriptsig for message `p` succeeds. Data in the message itself can be anything, but for example it can be:
 
-`p = (n*G, n*root_pub)`
+`p = (n*G, n*id_pub)`
 
-Here `n` is a random nonce, `n*G` is a corresponding curve point. If multiple keys are required then we provide multiple `n*root_pub` points there.
+Here `n` is a random nonce, `n*G` is a corresponding curve point. `id_pub` is a unique identity public key. It can be either a root public key of the wallet, or a public key of a fixed path. If multiple keys are required then we provide multiple `n*id_pub` points there and every co-signer shares `id_pub` with others during the setup phase.
 
 The good thing here is that if we use multisig any signer can multiply `n*G` by their root private key and verify if the resulting point is in the proof or not.
 
-Proper verification of this scheme requires bitcoin script evaluation on the hardware wallet that can be problematic. On the other hand in case of P2(W)PKH inputs we end up with a single signature. Initially hardware wallets can support only known script types for these kind of transactions.
+Proper verification of this scheme requires bitcoin script evaluation on the hardware wallet that can be problematic. On the other hand in case of P2(W)PKH inputs we end up with a single signature. Initially hardware wallets can support only known script types for these kind of transactions. Later it can be extended to miniscripts or even full bitcoin scripts.
 
 ## Possible implementation in PSBT
 
@@ -230,7 +230,7 @@ Partial proof in PSBT can look like this:
 
 ```
 key: signing_pubkey_i
-value: `signature_i , (n*G | n*root_pub1 | n*root_pub2 | ...)`
+value: `signature_i , (n*G | n*id_pub1 | n*id_pub2 | ...)`
 ```
 
 Complete proof:
