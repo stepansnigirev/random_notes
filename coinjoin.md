@@ -214,11 +214,11 @@ In case of P2WPKH it will be `(p, sig|pub)`.
 
 This scriptsig contains signatures and other stack values such that scriptpubkey evaluation against scriptsig for message `p` succeeds. Data in the message itself can be anything, but for example it can be:
 
-`p = (n*G, enc(root_fingerprint, k))` where `k=ECDH(n, root_prv)`.
+`p = (n*G, n*root_pub)`
 
-Here `n` is a random nonce, `n*G` is a corresponding curve point, `enc` means encryption, the encryption key is done from ECDH key aggreement with the nonce `n` and the root private key of the wallet `root_prv` (`k = root_prv*(n*G) = n*(root_prv*G)`). If multiple keys are required then we encrypt every fingerprint with corresponding ECDH key.
+Here `n` is a random nonce, `n*G` is a corresponding curve point. If multiple keys are required then we provide multiple `n*root_pub` points there.
 
-The good thing here is that if we use multisig any signer can generate the proof that can be read by another signer as ECDH only requires knowledge of the root public key.
+The good thing here is that if we use multisig any signer can multiply `n*G` by their root private key and verify if the resulting point is in the proof or not.
 
 Proper verification of this scheme requires bitcoin script evaluation on the hardware wallet that can be problematic. On the other hand in case of P2(W)PKH inputs we end up with a single signature. Initially hardware wallets can support only known script types for these kind of transactions.
 
@@ -230,7 +230,7 @@ Partial proof in PSBT can look like this:
 
 ```
 key: signing_pubkey_i
-value: `signature_i , (n*G | enc(root_figerprint_1, ECDH(n, root_prv_i)) | enc(root_figerprint2, ECDH(n, root_prv2)) | ...)`
+value: `signature_i , (n*G | n*root_pub1 | n*root_pub2 | ...)`
 ```
 
 Complete proof:
