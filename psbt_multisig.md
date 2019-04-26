@@ -14,7 +14,7 @@ Let's consider a multisignature setup where 1 of 2 keys are required to sign the
 
 The evil coordinator (i.e. hacked watch-only software wallet) prepares the PSBT transaction with an input controlled by signers (i.e. hardware wallets) `A` and `B`. He includes two ouputs in the transaction: one output that was intended and a "change" output where he replaces the key of the signer `B` to the key of the attacker `E`.
 
-He also inludes the derivation information for signer `A`. He can also include derivation information for key `E` with the fingerprint of the signer `B` for both the input and the "change" output. He sends then the PSBT to the signer `A`.
+He also includes the derivation information for signer `A`. He can also include derivation information for key `E` with the fingerprint of the signer `B` for both the input and the "change" output. He sends then the PSBT to the signer `A`.
 
 Signer `A` can verify that his key controls the input and the "change" address using provided derivation information. As derivation information contains only the fingerprint of the root key of the signers and not the master public key, the signer `A` can't verify that the second key of the change address belongs to signer `B` - he can only compare the fingerprint but this information can be forged.
 
