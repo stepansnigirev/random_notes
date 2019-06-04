@@ -7,6 +7,8 @@ Relevant discussions:
 - https://lists.linuxfoundation.org/pipermail/bitcoin-dev/2017-August/014843.html
 - https://github.com/trezor/trezor-firmware/issues/37
 
+Current spec to fix it (work in progress): https://github.com/satoshilabs/slips/blob/slips-19-20-coinjoin-proofs/slip-0019.md
+
 # Background 
 
 ## CoinJoin transactions
